@@ -33,6 +33,7 @@ export default function App() {
     return opt ? String(opt.winnings) : '80';
   });
   const [lightningAddress, setLightningAddress] = useState(localStorage.getItem('ttt_lightningAddress') || '');
+  const [addressLocked, setAddressLocked] = useState(false);
 
   // Payment state
   const [paymentInfo, setPaymentInfo] = useState(null); // { invoiceId, lightningInvoice, hostedInvoiceUrl, amountSats, amountUSD }
@@ -111,11 +112,18 @@ export default function App() {
         setMessage(msg);
       },
       paymentRequest: ({ lightningInvoice, hostedInvoiceUrl, amountSats, amountUSD, invoiceId, demo }) => {
+        setAddressLocked(true);
         setPaymentInfo({ lightningInvoice, hostedInvoiceUrl, amountSats, amountUSD, invoiceId, demo: !!demo });
         setIsWaitingForPayment(true);
         setMessage(`Pay ${amountSats} SATS (~$${amountUSD})`);
         setGameState('awaitingPayment');
         setCurrentScreen('payment');
+      },
+      payment_sent: ({ amount, status, txId }) => {
+        setMessage(`Payout sent: ${amount} SATS${txId ? ` (tx: ${txId})` : ''}`);
+      },
+      payment_error: ({ error }) => {
+        setMessage(`Payout error: ${error || 'Unknown error'}`);
       },
       paymentVerified: () => {
         setIsWaitingForPayment(false);
@@ -241,6 +249,7 @@ export default function App() {
     localStorage.setItem('ttt_lastBet', String(bet));
     localStorage.setItem('ttt_lightningAddress', user || '');
     localStorage.setItem('ttt_lastAddress', user || '');
+    setAddressLocked(true);
     setCurrentScreen('payment');
   };
 
@@ -283,6 +292,7 @@ export default function App() {
     setShowHowToModal(false);
     setShowStartModal(false);
     setShowSupportModal(false);
+    setAddressLocked(false);
   };
 
   useEffect(() => {
@@ -304,8 +314,9 @@ export default function App() {
       const urlParams = new URLSearchParams(window.location.search);
       const pAdd = hashParams.get('p_add') || urlParams.get('p_add');
       if (pAdd) {
-        const username = pAdd.split('@')[0];
+        const username = pAdd.split('@')[0].trim();
         setLightningAddress(username);
+        if (username) setAddressLocked(true);
         localStorage.setItem('ttt_lightningAddress', username);
         localStorage.setItem('ttt_lastAddress', username);
       } else if (!lightningAddress) {
@@ -599,6 +610,7 @@ export default function App() {
           connected={connected}
           onOpenTerms={() => setShowTerms(true)}
           onOpenPrivacy={() => setShowPrivacy(true)}
+          addressLocked={addressLocked}
         />
       )}
 

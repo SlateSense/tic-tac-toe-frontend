@@ -804,6 +804,23 @@
                     <div class="payout-message" id="payoutMessage" style="display: none;"></div>
                 </div>
 
+                
+                <!-- Connect Wallet -->
+                <div class="bet-selection" style="margin-top: 20px;">
+                    <h3 class="section-title">Connect Wallet</h3>
+                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
+                        <div style="position: relative; flex: 1;">
+                            <input id="speedUsername" type="text" placeholder="yourname" style="width: 100%; padding: 12px 100px 12px 12px; background: var(--bg-dark); border: 2px solid rgba(0, 255, 204, 0.3); border-radius: 10px; color: var(--text-light); font-family: 'Space Mono', monospace;" />
+                            <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--text-dim); font-family: 'Space Mono', monospace;">@speed.app</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input id="speedAuthToken" type="password" placeholder="Paste Speed auth token (optional)" style="flex: 1; padding: 12px; background: var(--bg-dark); border: 2px solid rgba(0, 255, 204, 0.3); border-radius: 10px; color: var(--text-light); font-family: 'Space Mono', monospace;" />
+                        <button id="fetchAddressBtn" class="info-btn" style="flex-shrink:0;">Fetch Address</button>
+                    </div>
+                    <div id="lnAddressStatus" style="margin-top: 8px; color: var(--text-dim); font-family: 'Space Mono', monospace; font-size: 0.9rem;"></div>
+                </div>
+
                 <!-- Info Buttons -->
                 <div class="info-buttons">
                     <button class="info-btn" id="howToPlayBtn">How to Play</button>

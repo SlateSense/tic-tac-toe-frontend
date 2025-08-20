@@ -1,5 +1,11 @@
 // Socket.io connection
-const socket = io('http://localhost:3001');
+// Prefer environment variables in production. Fallback to localhost for dev.
+const SOCKET_BASE = (typeof process !== 'undefined' && process.env && process.env.REACT_APP_SOCKET_URL)
+  || (window?.location?.hostname === 'localhost' ? 'http://localhost:4000' : '');
+if (!SOCKET_BASE && window?.location?.hostname !== 'localhost') {
+  console.warn('No REACT_APP_SOCKET_URL configured. Set it in Vercel to your backend WebSocket URL (e.g., wss://<render-app>.onrender.com)');
+}
+const socket = io(SOCKET_BASE || 'http://localhost:4000', { transports: ['websocket'] });
 
 // Game state
 let gameState = {
@@ -31,6 +37,12 @@ const statusMessage = document.getElementById('statusMessage');
 const payoutMessage = document.getElementById('payoutMessage');
 const turnTimer = document.getElementById('turnTimer');
 const timerValue = document.getElementById('timerValue');
+// New elements for wallet connection
+const speedUsernameInput = document.getElementById('speedUsername');
+const speedAuthTokenInput = document.getElementById('speedAuthToken');
+const fetchAddressBtn = document.getElementById('fetchAddressBtn');
+const useAddressBtn = document.getElementById('useAddressBtn');
+const lnAddressStatus = document.getElementById('lnAddressStatus');
 
 // Initialize particles
 function createParticles() {
@@ -57,7 +69,6 @@ betBtns.forEach(btn => {
         playBtn.disabled = false;
     });
 });
-
 // Play button
 playBtn.addEventListener('click', async () => {
     if (!gameState.selectedBet) {
@@ -65,11 +76,10 @@ playBtn.addEventListener('click', async () => {
         return;
     }
 
-    // Get Lightning address from Speed wallet or use demo
+    // Require a Lightning address (either set via auth or input elsewhere)
     if (!gameState.lightningAddress) {
-        // For demo mode, use a test address
-        gameState.lightningAddress = 'demo@speed.app';
-        gameState.authToken = 'demo-token';
+        showNotification('Please connect your Speed wallet or enter a Lightning address to proceed.', 'error');
+        return;
     }
 
     // Show waiting screen
@@ -122,14 +132,64 @@ function showOpponentFound(opponent, countdown) {
     `;
 }
 
+// Wallet connect handlers
+if (fetchAddressBtn) {
+    fetchAddressBtn.addEventListener('click', () => {
+        const token = (speedAuthTokenInput?.value || '').trim();
+        if (!token) {
+            showNotification('Please paste a valid Speed auth token first.', 'error');
+            return;
+        }
+        if (gameState.lightningAddress) return; // already set
+        gameState.authToken = token;
+        socket.emit('set_auth_token', { authToken: token });
+        lnAddressStatus.textContent = 'Fetching address from Speed...';
+    });
+}
+
+if (useAddressBtn) {
+    useAddressBtn.addEventListener('click', () => {
+        if (gameState.lightningAddress) return; // already set
+        const username = (speedUsernameInput?.value || '').trim();
+        if (!username) {
+            showNotification('Please enter your Speed username.', 'error');
+            return;
+        }
+        const addr = `${username}@speed.app`;
+        gameState.lightningAddress = addr;
+        lockLightningAddress(addr, true);
+        showNotification(`Using address ${addr}`, 'success');
+    });
+}
+
+function lockLightningAddress(addr, fromFetch = false) {
+    // Show and lock
+    if (speedUsernameInput) {
+        try {
+            const userPart = addr.includes('@') ? addr.split('@')[0] : addr;
+            speedUsernameInput.value = userPart;
+        } catch {}
+        speedUsernameInput.disabled = true;
+    }
+    if (speedAuthTokenInput) speedAuthTokenInput.disabled = true;
+    if (fetchAddressBtn) fetchAddressBtn.disabled = true;
+    if (useAddressBtn) useAddressBtn.disabled = true;
+    lnAddressStatus.textContent = `Connected: ${addr}`;
+}
+
 // Socket event handlers
 socket.on('waitingForOpponent', (data) => {
     let timeLeft = data.estWaitSeconds;
-    const waitingTimer = document.getElementById('waitingTimer');
-    
+    let waitingTimerEl = document.getElementById('waitingTimer');
+    if (!waitingTimerEl) {
+        // Ensure the waiting UI is visible so the timer element exists
+        showWaitingScreen();
+        waitingTimerEl = document.getElementById('waitingTimer');
+    }
+
     const waitInterval = setInterval(() => {
-        if (waitingTimer) {
-            waitingTimer.textContent = timeLeft + 's';
+        if (waitingTimerEl) {
+            waitingTimerEl.textContent = timeLeft + 's';
         }
         timeLeft--;
         
@@ -158,16 +218,9 @@ socket.on('matchFound', (data) => {
 });
 
 socket.on('paymentRequest', (data) => {
-    if (data.demo) {
-        // Auto-pay in demo mode by simulating webhook payment
-        setTimeout(() => {
-            socket.emit('simulatePayment', { invoiceId: data.invoiceId });
-        }, 800);
-    } else {
-        // Show Lightning invoice (BOLT11)
-        const invoice = data.lightningInvoice || data.invoice;
-        showPaymentModal(invoice, data.invoiceId);
-    }
+    // Show Lightning invoice (BOLT11)
+    const invoice = data.lightningInvoice || data.invoice;
+    showPaymentModal(invoice, data.invoiceId);
 });
 
 // Backend emits 'startGame'
@@ -220,6 +273,28 @@ socket.on('gameEnd', (data) => {
 });
 
 // Payment notifications from backend
+socket.on('lightning_address', (data) => {
+    const addr = (data && data.lightningAddress) || '';
+    if (!addr) {
+        showNotification('Failed to fetch address from Speed.', 'error');
+        return;
+    }
+    if (gameState.lightningAddress) return; // prevent changes after set
+    gameState.lightningAddress = addr;
+    lockLightningAddress(addr, true);
+    showNotification(`Connected Lightning address: ${addr}`, 'success');
+});
+
+socket.on('auth_error', (data) => {
+    const msg = data && data.error ? data.error : 'Auth error';
+    showNotification(`Auth error: ${msg}`, 'error');
+    lnAddressStatus.textContent = 'Auth failed. Please check your token.';
+});
+socket.on('paymentVerified', () => {
+    showNotification('Payment received! Waiting for opponent...', 'success');
+    // Restore waiting UI so upcoming waitingForOpponent updates the timer
+    showWaitingScreen();
+});
 socket.on('payment_sent', (data) => {
     showNotification(`Payout sent: ${data.amount} sats`, 'success');
     payoutMessage.style.display = 'block';

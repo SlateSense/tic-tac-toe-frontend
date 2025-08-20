@@ -19,7 +19,8 @@ export default function StartScreen({
   onStart,
   connected,
   onOpenTerms,
-  onOpenPrivacy
+  onOpenPrivacy,
+  addressLocked = false
 }) {
   const payoutAmount = BET_OPTIONS.find(o => o.amount === parseInt(betAmount, 10))?.winnings || 0;
 
@@ -40,10 +41,16 @@ export default function StartScreen({
             <input 
               id="ln-username" 
               value={lightningAddress} 
-              onChange={e => setLightningAddress(e.target.value)} 
+              onChange={e => {
+                const raw = e.target.value || '';
+                const user = raw.split('@')[0].trim();
+                setLightningAddress(user);
+              }} 
               placeholder="e.g. user" 
+              disabled={addressLocked}
             />
-            {lightningAddress && (
+            <span className="suffix" aria-hidden>@speed.app</span>
+            {lightningAddress && !addressLocked && (
               <button 
                 type="button" 
                 className="suffix-btn" 
@@ -54,7 +61,7 @@ export default function StartScreen({
               </button>
             )}
           </div>
-          <small className="helper">Use your Speed username (no domain needed)</small>
+          <small className="helper">Enter your Speed username. Your address will be username@speed.app</small>
         </div>
 
         <div className="form-section">
