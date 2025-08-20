@@ -273,7 +273,9 @@ button[disabled] { opacity:0.7; cursor:not-allowed; }
 .bet-grid { display:grid; gap:10px; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
 .bet-chip { position: relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:10px; border-radius: 12px; cursor:pointer; user-select:none; background: rgba(255,255,255,.06); border:1px solid var(--panel-border); transition: transform .12s ease, box-shadow .2s ease, filter .2s ease; }
 .bet-chip:hover { transform: translateY(-1px); filter: saturate(1.06); box-shadow: 0 10px 24px rgba(0,0,0,.28); }
-.bet-chip.active { background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 20%, transparent), color-mix(in srgb, var(--accent-2) 14%, transparent)); border-color: color-mix(in srgb, var(--accent) 40%, var(--panel-border)); box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset, 0 12px 28px rgba(0,0,0,.28), 0 0 26px color-mix(in srgb, var(--accent) 25%, transparent); }
+.bet-chip.active { background: rgba(255,255,255,.06); border-color: var(--panel-border); box-shadow: none; }
+.bet-chip.active .amt { color: #fff; }
+.bet-chip.active .win { color: #fff; }
 .bet-chip input { position:absolute; inset:0; opacity:0; pointer-events:none; }
 .bet-chip .amt { font-weight: 900; font-size: 18px; letter-spacing: .2px; color:#e5e7eb; }
 .bet-chip .win { font-size: 12px; color:#9fd3c7; }
