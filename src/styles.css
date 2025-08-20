@@ -399,6 +399,56 @@ button[disabled] { opacity:0.7; cursor:not-allowed; }
 .app.theme-simple .cell.win { background: #fffbe6; border-color: #000; box-shadow: none; }
 .app.theme-simple .cell.last { outline: 2px dashed #000; }
 
+/* Simple theme readability overrides */
+.app.theme-simple a { color: #000; }
+.app.theme-simple .modal { background: #ffffff; border: 1px solid #000; }
+.app.theme-simple .tabs button,
+.app.theme-simple .neo-tabs button { background: #ffffff; color:#000; border:1px solid #000; }
+.app.theme-simple .tabs button.active,
+.app.theme-simple .neo-tabs button.active { background:#000; color:#fff; border-color:#000; }
+.app.theme-simple button { background:#ffffff; color:#000; border:1px solid #000; }
+.app.theme-simple button:hover { filter:none; }
+.app.theme-simple .neo-btn { background:#ffffff; color:#000; border:1px solid #000; box-shadow:none; text-shadow:none; }
+.app.theme-simple .neo-btn.primary { background:#000; color:#fff; border-color:#000; box-shadow:none; }
+.app.theme-simple .neo-btn.outline { background:transparent; color:#000; border:1px solid #000; }
+.app.theme-simple input,
+.app.theme-simple select { background:#ffffff; color:#000; border:1px solid #000; }
+.app.theme-simple .input-group input { color:#000; }
+.app.theme-simple .suffix-btn { background:#ffffff; color:#000; border:1px solid #000; }
+.app.theme-simple .payment-msg { color:#000; }
+.app.theme-simple .status,
+.app.theme-simple .meta,
+.app.theme-simple .tagline,
+.app.theme-simple .cta-context,
+.app.theme-simple .cta-btn .sub,
+.app.theme-simple .muted { color:#111; }
+.app.theme-simple .countdown { background:#ffffff; border:1px solid #000; color:#000; }
+.app.theme-simple .qr-frame { background:#ffffff; border:1px solid #000; box-shadow:none; }
+.app.theme-simple .history li { background:#ffffff; border:1px solid #000; }
+.app.theme-simple .stats-chips .chip { background:#ffffff; color:#000; border:1px solid #000; }
+.app.theme-simple .bet-chip { background:#ffffff; color:#000; border:1px solid #000; box-shadow:none; }
+.app.theme-simple .bet-chip .amt,
+.app.theme-simple .bet-chip .win { color:#000; }
+.app.theme-simple .bet-chip.active { background:#000; color:#fff; border-color:#000; box-shadow:none; }
+.app.theme-simple .practice-title { color:#000; }
+.app.theme-simple .practice .status { color:#000; }
+.app.theme-simple .amount-display .label,
+.app.theme-simple .amount-display .value { color:#000; }
+.app.theme-simple .amount-display .usd { color:#333; }
+.app.theme-simple .linklike { background:transparent; border:0; color:#000; text-decoration:underline; padding:0; }
+/* More simple-theme fixes */
+.app.theme-simple .start-header .subtitle { color:#000; }
+.app.theme-simple .badge,
+.app.theme-simple .badge.ok,
+.app.theme-simple .badge.warn,
+.app.theme-simple .badge.info { background:#ffffff; color:#000; border:1px solid #000; }
+.app.theme-simple .badge .dot { background:#000; box-shadow:none; }
+.app.theme-simple .btn-outline { background:transparent; color:#000; border:1px solid #000; }
+.app.theme-simple .message-line { color:#000; }
+.app.theme-simple .neo-btn:focus-visible,
+.app.theme-simple .cell:focus-visible,
+.app.theme-simple button:focus-visible { outline:2px solid #000; outline-offset:2px; }
+
 /* Practice panel */
 .practice { margin: 6px auto 10px; width: min(100%, 260px); }
 .practice-header { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 8px; }
