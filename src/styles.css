@@ -354,6 +354,51 @@ button[disabled] { opacity:0.7; cursor:not-allowed; }
 .app.theme-majestic .neo-btn.primary { box-shadow: 0 10px 26px rgba(0,0,0,.35), 0 0 34px rgba(168,85,247,.22); }
 .app.theme-majestic .neo-board .cell { background: rgba(8,16,37,0.9); }
 
+/* Simple theme (flat green, minimal UI) */
+.app.theme-simple {
+  color: #000;
+  background: #1dde77;
+}
+.app.theme-simple::before,
+.app.theme-simple::after { content: none; }
+
+/* Remove neon board glow */
+.app.theme-simple .neo-board::before { content: none; }
+
+/* Simple panels */
+.app.theme-simple .app-header,
+.app.theme-simple .panel,
+.app.theme-simple .neo-panel {
+  background: #ffffff;
+  border: 1px solid #000;
+  box-shadow: none;
+}
+.app.theme-simple .glass { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* Brand */
+.app.theme-simple .brand-mark { background: #000; color: #fff; animation: none; filter: none; }
+.app.theme-simple .brand-title { background: none; color: #000; }
+
+/* Inputs */
+.app.theme-simple .input-group { background: #ffffff; border-color: #000; }
+.app.theme-simple .input-group .prefix { color: #000; filter: none; }
+.app.theme-simple .helper { color: #111; }
+
+/* Board cells */
+.app.theme-simple .cell {
+  background: #ffffff;
+  border: 2px solid #000;
+  color: #000;
+  text-shadow: none;
+}
+.app.theme-simple .cell.x,
+.app.theme-simple .cell.o {
+  color: #000;
+  text-shadow: none;
+}
+.app.theme-simple .cell.win { background: #fffbe6; border-color: #000; box-shadow: none; }
+.app.theme-simple .cell.last { outline: 2px dashed #000; }
+
 /* Practice panel */
 .practice { margin: 6px auto 10px; width: min(100%, 260px); }
 .practice-header { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 8px; }

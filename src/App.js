@@ -55,7 +55,10 @@ export default function App() {
   const [showSupportModal, setShowSupportModal] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
-  const [theme, setTheme] = useState(() => localStorage.getItem('ttt_theme') || 'minimal');
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('ttt_theme');
+    return saved && saved !== 'neon' ? saved : 'simple';
+  });
   const [turnDuration, setTurnDuration] = useState(null); // seconds for current turn
   const confettiRef = useRef(null);
   const [showSettings, setShowSettings] = useState(false);
@@ -693,7 +696,7 @@ export default function App() {
             </div>
             <div className="section">
               <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
-                {['minimal','neon','ocean','sunset','majestic'].map(tn => (
+                {['simple','minimal','ocean','sunset','majestic'].map(tn => (
                   <button key={tn} className={`neo-btn ${theme===tn?'primary':''}`} onClick={()=>setTheme(tn)}>{tn}</button>
                 ))}
               </div>
