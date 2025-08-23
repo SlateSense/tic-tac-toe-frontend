@@ -6,8 +6,7 @@ export default function PaymentScreen({
   message,
   onCopyPayment,
   onCancel,
-  qrCode,
-  onCheckPayment
+  qrCode
 }) {
   const [showInlineWindow, setShowInlineWindow] = useState(true);
 
@@ -77,17 +76,6 @@ export default function PaymentScreen({
           <button className="neo-btn" onClick={onCopyPayment}>
             Copy Invoice
           </button>
-          {onCheckPayment && (
-            <button 
-              className="neo-btn primary"
-              onClick={onCheckPayment}
-              style={{
-                background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)'
-              }}
-            >
-              Check Payment Status
-            </button>
-          )}
           {localStorage.getItem('speedInterfaceUrl') && (
             <button 
               className="neo-btn primary"

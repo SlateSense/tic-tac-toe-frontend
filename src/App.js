@@ -327,24 +327,7 @@ export default function App() {
   };
 
 
-  const checkPaymentStatus = () => {
-    if (!socket || !paymentInfo) return;
-    console.log('Checking payment status for invoice:', paymentInfo.invoiceId);
-    socket.emit('checkPayment', { invoiceId: paymentInfo.invoiceId });
-    setMessage('Checking payment status...');
-  };
-
-  // Auto-check payment status every 3 seconds when waiting for payment
-  useEffect(() => {
-    if (!isWaitingForPayment || !paymentInfo || !socket) return;
-    
-    const interval = setInterval(() => {
-      console.log('Auto-checking payment status...');
-      socket.emit('checkPayment', { invoiceId: paymentInfo.invoiceId });
-    }, 3000);
-    
-    return () => clearInterval(interval);
-  }, [isWaitingForPayment, paymentInfo, socket]);
+  // Sea Battle style - payment verification only via webhooks
 
   const onCellClick = (idx) => {
     if (gameState !== 'playing') return;
@@ -709,7 +692,6 @@ export default function App() {
           onCopyPayment={copyPayment}
           onCancel={resetToMenu}
           qrCode={qrCode}
-          onCheckPayment={checkPaymentStatus}
         />
       )}
 
