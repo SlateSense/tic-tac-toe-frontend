@@ -32,7 +32,10 @@ export default function App() {
     const opt = BET_OPTIONS.find(o => o.amount === parseInt(saved || '50'));
     return opt ? String(opt.winnings) : '80';
   });
-  const [lightningAddress, setLightningAddress] = useState(localStorage.getItem('ttt_lightningAddress') || '');
+  const [lightningAddress, setLightningAddress] = useState('');
+  const [acctId, setAcctId] = useState('');
+  const [qrCode, setQrCode] = useState('');
+  const [lnurl, setLnurl] = useState('');
   const [addressLocked, setAddressLocked] = useState(false);
 
   // Payment state
@@ -114,13 +117,36 @@ export default function App() {
         const msg = typeof payload === 'string' ? payload : (payload?.message || 'Error');
         setMessage(msg);
       },
-      paymentRequest: ({ lightningInvoice, hostedInvoiceUrl, amountSats, amountUSD, invoiceId, demo }) => {
-        setAddressLocked(true);
-        setPaymentInfo({ lightningInvoice, hostedInvoiceUrl, amountSats, amountUSD, invoiceId, demo: !!demo });
-        setIsWaitingForPayment(true);
+      paymentRequest: async ({ lightningInvoice, hostedInvoiceUrl, amountSats, amountUSD, invoiceId, speedInterfaceUrl }) => {
+        const data = { lightningInvoice, hostedInvoiceUrl, amountSats, amountUSD, invoiceId, speedInterfaceUrl };
+        setPaymentInfo(data);
+        setLnurl(lightningInvoice || hostedInvoiceUrl);
+        setQrCode('');
         setMessage(`Pay ${amountSats} SATS (~$${amountUSD})`);
         setGameState('awaitingPayment');
         setCurrentScreen('payment');
+
+        // Generate QR code for Lightning invoice
+        if (lightningInvoice) {
+          try {
+            const response = await fetch(`${BACKEND_URL}/api/generate-qr`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ invoice: lightningInvoice })
+            });
+            const qrData = await response.json();
+            if (qrData.qr) {
+              setQrCode(qrData.qr);
+            }
+          } catch (error) {
+            console.error('Failed to generate QR code:', error);
+          }
+        }
+
+        // Store Speed interface URL if available
+        if (speedInterfaceUrl) {
+          localStorage.setItem('speedInterfaceUrl', speedInterfaceUrl);
+        }
       },
       payment_sent: ({ amount, status, txId }) => {
         setMessage(`Payout sent: ${amount} SATS${txId ? ` (tx: ${txId})` : ''}`);
@@ -242,16 +268,51 @@ export default function App() {
     };
   }, [BACKEND_URL, betAmount, history]);
 
-  const doJoin = () => {
-    if (!socket || !connected) return;
-    if (!acceptedTerms) { setMessage('Please accept Terms & Conditions to continue'); return; }
-    const bet = parseInt(betAmount, 10);
-    const user = (lightningAddress || '').trim();
-    const addr = user ? (user.includes('@') ? user : `${user}@speed.app`) : 'anon';
-    socket.emit('joinGame', { betAmount: bet, lightningAddress: addr });
-    localStorage.setItem('ttt_lastBet', String(bet));
-    localStorage.setItem('ttt_lightningAddress', user || '');
-    localStorage.setItem('ttt_lastAddress', user || '');
+  const handleJoinGame = async () => {
+    // Auto-format Lightning address if needed
+    let formattedAddress = lightningAddress.trim();
+    if (formattedAddress && !formattedAddress.includes('@')) {
+      formattedAddress = `${formattedAddress}@speed.app`;
+      setLightningAddress(formattedAddress);
+    }
+
+    if (!formattedAddress || !formattedAddress.includes('@')) {
+      alert('Please enter a valid Lightning address (e.g., username or username@speed.app)');
+      return;
+    }
+    if (!betAmount) {
+      alert('Please select a bet amount');
+      return;
+    }
+
+    // Check for Speed auth token and fetch Lightning address if available
+    const authToken = localStorage.getItem('speedAuthToken');
+    if (authToken && !lightningAddress) {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/get-lightning-address`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ authToken })
+        });
+        const data = await response.json();
+        if (data.lightningAddress) {
+          setLightningAddress(data.lightningAddress);
+          setAcctId(data.acctId);
+          formattedAddress = data.lightningAddress;
+        }
+      } catch (error) {
+        console.error('Failed to fetch Lightning address:', error);
+      }
+    }
+
+    socket.emit('joinGame', { 
+      betAmount: parseInt(betAmount, 10), 
+      lightningAddress: formattedAddress,
+      acctId: acctId || localStorage.getItem('speedAcctId')
+    });
+    localStorage.setItem('ttt_lastBet', String(betAmount));
+    localStorage.setItem('ttt_lightningAddress', formattedAddress || '');
+    localStorage.setItem('ttt_lastAddress', formattedAddress || '');
     setAddressLocked(true);
     setCurrentScreen('payment');
   };
@@ -609,7 +670,7 @@ export default function App() {
           setBetAmount={setBetAmount}
           acceptedTerms={acceptedTerms}
           setAcceptedTerms={setAcceptedTerms}
-          onStart={doJoin}
+          onStart={handleJoinGame}
           connected={connected}
           onOpenTerms={() => setShowTerms(true)}
           onOpenPrivacy={() => setShowPrivacy(true)}
@@ -624,6 +685,7 @@ export default function App() {
           onCopyPayment={copyPayment}
           onSimulatePayment={simulatePayment}
           onCancel={resetToMenu}
+          qrCode={qrCode}
         />
       )}
 

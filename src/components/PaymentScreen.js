@@ -6,7 +6,8 @@ export default function PaymentScreen({
   message,
   onCopyPayment,
   onSimulatePayment,
-  onCancel
+  onCancel,
+  qrCode
 }) {
   const [showInlineWindow, setShowInlineWindow] = useState(true);
 
@@ -45,10 +46,14 @@ export default function PaymentScreen({
         ) : (
           <div className="qr-container">
             <div className="qr-frame">
-              <QRCodeSVG 
-                value={paymentInfo.lightningInvoice || paymentInfo.hostedInvoiceUrl || ''} 
-                size={240} 
-              />
+              {qrCode ? (
+                <img src={qrCode} alt="Lightning QR Code" style={{ width: 240, height: 240 }} />
+              ) : (
+                <QRCodeSVG 
+                  value={paymentInfo.lightningInvoice || paymentInfo.hostedInvoiceUrl || ''} 
+                  size={240} 
+                />
+              )}
             </div>
           </div>
         )}
@@ -72,9 +77,15 @@ export default function PaymentScreen({
           <button className="neo-btn" onClick={onCopyPayment}>
             Copy Invoice
           </button>
-          {paymentInfo.demo && (
-            <button className="neo-btn" onClick={onSimulatePayment}>
-              Simulate Payment (Demo)
+          {localStorage.getItem('speedInterfaceUrl') && (
+            <button 
+              className="neo-btn primary"
+              onClick={() => window.open(localStorage.getItem('speedInterfaceUrl'), '_blank')}
+              style={{
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+              }}
+            >
+              Pay with Speed Wallet
             </button>
           )}
           <button className="neo-btn outline" onClick={onCancel}>
