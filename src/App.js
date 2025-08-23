@@ -125,6 +125,7 @@ export default function App() {
         setMessage(`Pay ${amountSats} SATS (~$${amountUSD})`);
         setGameState('awaitingPayment');
         setCurrentScreen('payment');
+        setIsWaitingForPayment(true);
 
         // Generate QR code for Lightning invoice
         if (lightningInvoice) {
@@ -159,6 +160,14 @@ export default function App() {
         setMessage('Payment verified! Waiting for opponent...');
         setGameState('waiting');
         setCurrentScreen('waiting');
+      },
+      paymentStatus: ({ status, message }) => {
+        console.log('Payment status:', status, message);
+        if (status === 'pending' || status === 'unpaid') {
+          setMessage('Payment pending... Please complete the payment');
+        } else if (status === 'error') {
+          setMessage(`Payment check error: ${message || 'Unknown error'}`);
+        }
       },
       transaction: ({ message }) => {
         setMessage(message);
@@ -317,10 +326,25 @@ export default function App() {
     setCurrentScreen('payment');
   };
 
-  const simulatePayment = () => {
+
+  const checkPaymentStatus = () => {
     if (!socket || !paymentInfo) return;
-    socket.emit('simulatePayment', { invoiceId: paymentInfo.invoiceId });
+    console.log('Checking payment status for invoice:', paymentInfo.invoiceId);
+    socket.emit('checkPayment', { invoiceId: paymentInfo.invoiceId });
+    setMessage('Checking payment status...');
   };
+
+  // Auto-check payment status every 3 seconds when waiting for payment
+  useEffect(() => {
+    if (!isWaitingForPayment || !paymentInfo || !socket) return;
+    
+    const interval = setInterval(() => {
+      console.log('Auto-checking payment status...');
+      socket.emit('checkPayment', { invoiceId: paymentInfo.invoiceId });
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [isWaitingForPayment, paymentInfo, socket]);
 
   const onCellClick = (idx) => {
     if (gameState !== 'playing') return;
@@ -683,9 +707,9 @@ export default function App() {
           paymentInfo={paymentInfo}
           message={message}
           onCopyPayment={copyPayment}
-          onSimulatePayment={simulatePayment}
           onCancel={resetToMenu}
           qrCode={qrCode}
+          onCheckPayment={checkPaymentStatus}
         />
       )}
 
