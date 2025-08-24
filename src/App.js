@@ -650,14 +650,14 @@ export default function App() {
             </div>
             <div className="cta-item">
               <button
-                className="neo-btn cta-secondary"
+                className="neo-btn cta-main"
                 onClick={() => setShowHowToModal(true)}
                 aria-label="How to Play — Rules and tips"
               >How to Play</button>
             </div>
             <div className="cta-item">
               <button
-                className="neo-btn cta-tertiary"
+                className="neo-btn cta-main outline"
                 onClick={() => setShowSupportModal(true)}
                 aria-label="Contact Support on Telegram"
               >Contact Support</button>
@@ -668,7 +668,7 @@ export default function App() {
         </div>
       )}
 
-      {activeTab === 'Menu' && currentScreen === 'start' && (
+      {currentScreen === 'start' && (
         <StartScreen
           lightningAddress={lightningAddress}
           setLightningAddress={setLightningAddress}
@@ -684,7 +684,7 @@ export default function App() {
         />
       )}
 
-      {activeTab === 'Menu' && currentScreen === 'payment' && (
+      {currentScreen === 'payment' && (
         <PaymentScreen
           paymentInfo={paymentInfo}
           message={message}
@@ -694,7 +694,7 @@ export default function App() {
         />
       )}
 
-      {activeTab === 'Menu' && currentScreen === 'waiting' && (
+      {currentScreen === 'waiting' && (
         <WaitingScreen
           waitingInfo={waitingInfo}
           waitingSecondsLeft={waitingSecondsLeft}
@@ -703,7 +703,7 @@ export default function App() {
         />
       )}
 
-      {activeTab === 'Menu' && currentScreen === 'game' && (
+      {currentScreen === 'game' && (
         <GameScreen
           board={board}
           symbol={symbol}
