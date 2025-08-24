@@ -21,6 +21,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:4000'
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('Menu');
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [gameState, setGameState] = useState('splash');
   const [currentScreen, setCurrentScreen] = useState('menu'); // 'menu', 'start', 'payment', 'waiting', 'game'
   const [socket, setSocket] = useState(null);
@@ -631,9 +632,8 @@ export default function App() {
         </div>
       </header>
       <div className="tabs neo-tabs">
-        {['Menu','History'].map(t => (
-          <button key={t} className={activeTab===t? 'active':''} onClick={()=>setActiveTab(t)}>{t}</button>
-        ))}
+        <button className={activeTab==='Menu'? 'active':''} onClick={()=>setActiveTab('Menu')}>Menu</button>
+        <button onClick={()=>setShowHistoryModal(true)}>History</button>
       </div>
 
       {activeTab === 'Menu' && currentScreen === 'menu' && (
@@ -725,10 +725,13 @@ export default function App() {
       )}
 
 
-      {activeTab === 'History' && (
-        <div className="history-screen">
-          <div className="panel neo-panel glass">
-            <h2 style={{fontSize: '24px', fontWeight: '700', marginBottom: '16px'}}>📊 Game History</h2>
+      {showHistoryModal && (
+        <div className="history-modal" onClick={() => setShowHistoryModal(false)}>
+          <div className="history-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="history-modal-header">
+              <h2 className="history-modal-title">📊 Game History</h2>
+              <button className="neo-btn" onClick={() => setShowHistoryModal(false)}>✕</button>
+            </div>
             <div className="stats-chips" aria-label="Your stats">
               <span className="chip">🏆 Wins: {stats.wins}</span>
               <span className="chip">❌ Losses: {stats.losses}</span>
@@ -743,9 +746,9 @@ export default function App() {
                 <p style={{fontSize: '14px'}}>Start your first game to see your history here!</p>
               </div>
             ) : (
-              <ul className="history">
+              <ul className="history" style={{maxHeight: '400px', overflowY: 'auto'}}>
                 {history.map(h => (
-                  <li key={h.id}>
+                  <li key={h.id} style={{padding: '12px', marginBottom: '10px'}}>
                     <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                       <div>
                         <div style={{fontSize: '14px', fontWeight: '600'}}>
