@@ -21,6 +21,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:4000'
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('Menu');
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [gameState, setGameState] = useState('splash');
   const [currentScreen, setCurrentScreen] = useState('menu'); // 'menu', 'start', 'payment', 'waiting', 'game'
   const [socket, setSocket] = useState(null);
@@ -631,9 +632,8 @@ export default function App() {
         </div>
       </header>
       <div className="tabs neo-tabs">
-        {['Menu','History'].map(t => (
-          <button key={t} className={activeTab===t? 'active':''} onClick={()=>setActiveTab(t)}>{t}</button>
-        ))}
+        <button className={activeTab==='Menu'? 'active':''} onClick={()=>setActiveTab('Menu')}>Menu</button>
+        <button onClick={()=>setShowHistoryModal(true)}>History</button>
       </div>
 
       {activeTab === 'Menu' && currentScreen === 'menu' && (
@@ -725,29 +725,53 @@ export default function App() {
       )}
 
 
-      {activeTab === 'History' && (
-        <div className="panel neo-panel glass">
-          <div className="stats-chips" aria-label="Your stats">
-            <span className="chip">Wins: {stats.wins}</span>
-            <span className="chip">Losses: {stats.losses}</span>
-            <span className="chip">Win rate: {stats.winrate}%</span>
-            <span className="chip">Streak: {stats.streak}</span>
-            <span className="chip">Net: {stats.net} SATS</span>
+      {showHistoryModal && (
+        <div className="history-modal" onClick={() => setShowHistoryModal(false)}>
+          <div className="history-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="history-modal-header">
+              <h2 className="history-modal-title">📊 Game History</h2>
+              <button className="neo-btn" onClick={() => setShowHistoryModal(false)}>✕</button>
+            </div>
+            <div className="stats-chips" aria-label="Your stats">
+              <span className="chip">🏆 Wins: {stats.wins}</span>
+              <span className="chip">❌ Losses: {stats.losses}</span>
+              <span className="chip">📈 Win rate: {stats.winrate}%</span>
+              <span className="chip">🔥 Streak: {stats.streak}</span>
+              <span className="chip">💰 Net: {stats.net} SATS</span>
+            </div>
+            <h3 style={{marginTop: '20px', marginBottom: '12px'}}>Recent Games</h3>
+            {history.length === 0 ? (
+              <div style={{textAlign: 'center', padding: '40px 20px', color: '#666'}}>
+                <p style={{fontSize: '18px', marginBottom: '8px'}}>No games played yet</p>
+                <p style={{fontSize: '14px'}}>Start your first game to see your history here!</p>
+              </div>
+            ) : (
+              <ul className="history" style={{maxHeight: '400px', overflowY: 'auto'}}>
+                {history.map(h => (
+                  <li key={h.id} style={{padding: '12px', marginBottom: '10px'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                      <div>
+                        <div style={{fontSize: '14px', fontWeight: '600'}}>
+                          {h.outcome === 'win' ? '🎉 Victory!' : '💔 Defeat'}
+                        </div>
+                        <div style={{fontSize: '12px', color: '#666', marginTop: '4px'}}>
+                          {new Date(h.ts).toLocaleString()}
+                        </div>
+                      </div>
+                      <div style={{textAlign: 'right'}}>
+                        <div style={{fontSize: '16px', fontWeight: '700', color: h.outcome === 'win' ? '#22c55e' : '#ef4444'}}>
+                          {h.outcome === 'win' ? '+' : '-'}{Math.abs(h.amount)} SATS
+                        </div>
+                        <div style={{fontSize: '12px', color: '#666'}}>
+                          Bet: {h.bet} SATS
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          <h3>Recent Games</h3>
-          {history.length === 0 ? (
-            <p>No games yet.</p>
-          ) : (
-            <ul className="history">
-              {history.map(h => (
-                <li key={h.id}>
-                  <span>{new Date(h.ts).toLocaleString()}</span>
-                  <span>Bet: {h.bet}</span>
-                  <span>{h.outcome === 'win' ? '+': ''}{h.amount} SATS</span>
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
       )}
       <div ref={confettiRef} className="confetti-layer" />
@@ -763,8 +787,8 @@ export default function App() {
             </div>
             <div className="section">
               <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
-                {['simple','blue','pink','yellow'].map(tn => (
-                  <button key={tn} className={`neo-btn ${theme===tn?'primary':''}`} onClick={()=>setTheme(tn)} style={{textTransform: 'capitalize'}}>{tn}</button>
+                {[['simple', 'Green'], ['blue', 'Monochrome'], ['pink', 'Red'], ['yellow', 'Gold']].map(([key, label]) => (
+                  <button key={key} className={`neo-btn ${theme===key?'primary':''}`} onClick={()=>setTheme(key)} style={{textTransform: 'capitalize'}}>{label}</button>
                 ))}
               </div>
             </div>
