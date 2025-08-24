@@ -668,7 +668,7 @@ export default function App() {
         </div>
       )}
 
-      {currentScreen === 'start' && (
+      {activeTab === 'Menu' && currentScreen === 'start' && (
         <StartScreen
           lightningAddress={lightningAddress}
           setLightningAddress={setLightningAddress}
@@ -684,7 +684,7 @@ export default function App() {
         />
       )}
 
-      {currentScreen === 'payment' && (
+      {activeTab === 'Menu' && currentScreen === 'payment' && (
         <PaymentScreen
           paymentInfo={paymentInfo}
           message={message}
@@ -694,7 +694,7 @@ export default function App() {
         />
       )}
 
-      {currentScreen === 'waiting' && (
+      {activeTab === 'Menu' && currentScreen === 'waiting' && (
         <WaitingScreen
           waitingInfo={waitingInfo}
           waitingSecondsLeft={waitingSecondsLeft}
@@ -703,7 +703,7 @@ export default function App() {
         />
       )}
 
-      {currentScreen === 'game' && (
+      {activeTab === 'Menu' && currentScreen === 'game' && (
         <GameScreen
           board={board}
           symbol={symbol}
@@ -726,30 +726,28 @@ export default function App() {
 
 
       {activeTab === 'History' && (
-        <div className="history-page">
-          <div className="panel neo-panel glass">
-            <div className="stats-chips" aria-label="Your stats">
-              <span className="chip">Wins: {stats.wins}</span>
-              <span className="chip">Losses: {stats.losses}</span>
-              <span className="chip">Win rate: {stats.winrate}%</span>
-              <span className="chip">Streak: {stats.streak}</span>
-              <span className="chip">Net: {stats.net} SATS</span>
-            </div>
-            <h3>Recent Games</h3>
-            {history.length === 0 ? (
-              <p>No games yet.</p>
-            ) : (
-              <ul className="history">
-                {history.map(h => (
-                  <li key={h.id}>
-                    <span>{new Date(h.ts).toLocaleString()}</span>
-                    <span>Bet: {h.bet}</span>
-                    <span>{h.outcome === 'win' ? '+': ''}{h.amount} SATS</span>
-                  </li>
-                ))}
-              </ul>
-            )}
+        <div className="panel neo-panel glass">
+          <div className="stats-chips" aria-label="Your stats">
+            <span className="chip">Wins: {stats.wins}</span>
+            <span className="chip">Losses: {stats.losses}</span>
+            <span className="chip">Win rate: {stats.winrate}%</span>
+            <span className="chip">Streak: {stats.streak}</span>
+            <span className="chip">Net: {stats.net} SATS</span>
           </div>
+          <h3>Recent Games</h3>
+          {history.length === 0 ? (
+            <p>No games yet.</p>
+          ) : (
+            <ul className="history">
+              {history.map(h => (
+                <li key={h.id}>
+                  <span>{new Date(h.ts).toLocaleString()}</span>
+                  <span>Bet: {h.bet}</span>
+                  <span>{h.outcome === 'win' ? '+': ''}{h.amount} SATS</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
       <div ref={confettiRef} className="confetti-layer" />
