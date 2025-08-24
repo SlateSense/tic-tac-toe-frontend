@@ -282,7 +282,6 @@ export default function App() {
     let formattedAddress = lightningAddress.trim();
     if (formattedAddress && !formattedAddress.includes('@')) {
       formattedAddress = `${formattedAddress}@speed.app`;
-      setLightningAddress(formattedAddress);
     }
 
     if (!formattedAddress || !formattedAddress.includes('@')) {
