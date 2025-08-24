@@ -650,14 +650,14 @@ export default function App() {
             </div>
             <div className="cta-item">
               <button
-                className="neo-btn cta-main"
+                className="neo-btn cta-secondary"
                 onClick={() => setShowHowToModal(true)}
                 aria-label="How to Play — Rules and tips"
               >How to Play</button>
             </div>
             <div className="cta-item">
               <button
-                className="neo-btn cta-main outline"
+                className="neo-btn cta-tertiary"
                 onClick={() => setShowSupportModal(true)}
                 aria-label="Contact Support on Telegram"
               >Contact Support</button>
@@ -726,28 +726,30 @@ export default function App() {
 
 
       {activeTab === 'History' && (
-        <div className="panel neo-panel glass">
-          <div className="stats-chips" aria-label="Your stats">
-            <span className="chip">Wins: {stats.wins}</span>
-            <span className="chip">Losses: {stats.losses}</span>
-            <span className="chip">Win rate: {stats.winrate}%</span>
-            <span className="chip">Streak: {stats.streak}</span>
-            <span className="chip">Net: {stats.net} SATS</span>
+        <div className="history-page">
+          <div className="panel neo-panel glass">
+            <div className="stats-chips" aria-label="Your stats">
+              <span className="chip">Wins: {stats.wins}</span>
+              <span className="chip">Losses: {stats.losses}</span>
+              <span className="chip">Win rate: {stats.winrate}%</span>
+              <span className="chip">Streak: {stats.streak}</span>
+              <span className="chip">Net: {stats.net} SATS</span>
+            </div>
+            <h3>Recent Games</h3>
+            {history.length === 0 ? (
+              <p>No games yet.</p>
+            ) : (
+              <ul className="history">
+                {history.map(h => (
+                  <li key={h.id}>
+                    <span>{new Date(h.ts).toLocaleString()}</span>
+                    <span>Bet: {h.bet}</span>
+                    <span>{h.outcome === 'win' ? '+': ''}{h.amount} SATS</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          <h3>Recent Games</h3>
-          {history.length === 0 ? (
-            <p>No games yet.</p>
-          ) : (
-            <ul className="history">
-              {history.map(h => (
-                <li key={h.id}>
-                  <span>{new Date(h.ts).toLocaleString()}</span>
-                  <span>Bet: {h.bet}</span>
-                  <span>{h.outcome === 'win' ? '+': ''}{h.amount} SATS</span>
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
       )}
       <div ref={confettiRef} className="confetti-layer" />
