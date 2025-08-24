@@ -248,14 +248,6 @@ button:active {
   border:2px solid #000;
   font-weight: 500;
 }
-.history.practice-board { 
-  display: grid; 
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 4px; 
-  background: #000; 
-  padding: 4px; 
-  border-radius: 8px; 
-}
 /* Winning line highlight */
 .cell.win { 
   background: #ffeb3b; 
@@ -272,8 +264,14 @@ button:active {
   box-shadow: 0 0 0 3px rgba(0,0,0,0.2);
 }
 /* X / O colors */
-.cell.x { color:#000; }
-.cell.o { color:#000; }
+.cell.x::before { 
+  content: 'X';
+  filter: none !important;
+}
+.cell.o::before { 
+  content: 'O';
+  filter: none !important;
+}
 /* Add pop animation when placing X or O */
 .cell.x, .cell.o { 
   animation: pop 0.3s ease-out;
@@ -597,7 +595,9 @@ button[disabled] {
   background: #000; 
   color: #fff;
 }
-.app.theme-yellow .cta-main { 
+
+/* CTA Button Styles - matching Simple theme */
+.cta-main { 
   background: #000; 
   color: #fff; 
   border: 2px solid #000; 
@@ -634,11 +634,6 @@ button[disabled] {
   background: rgba(0,0,0,0.05); 
 }
 
-/* Ensure consistent CTA styles across all themes */
-.app .cta-main { background: #000; color: #fff; }
-.app .cta-secondary { background: #fff; color: #000; border: 2px solid #000; }
-.app .cta-tertiary { background: transparent; color: #000; border: 2px solid transparent; }
-.app .cta-tertiary:hover { background: rgba(0,0,0,0.05); }
 
 /* Simple theme (flat green, minimal UI) */
 .app.theme-simple {
@@ -652,10 +647,6 @@ button[disabled] {
 .app.theme-simple .neo-panel { background: #ffffff; border: 2px solid #000; }
 .app.theme-simple .cell { background: #ffffff; border: 2px solid #000; }
 .app.theme-simple .cell:hover:not(:disabled) { background: #f5f5f5; }
-.app.theme-simple .cta-main { background: #000; color: #fff; }
-.app.theme-simple .cta-secondary { background: #fff; color: #000; border: 2px solid #000; }
-.app.theme-simple .cta-tertiary { background: transparent; color: #000; border: 2px solid transparent; }
-.app.theme-simple .cta-tertiary:hover { background: rgba(0,0,0,0.05); }
 
 /* Settings modal */
 .modal-backdrop { 
@@ -775,10 +766,6 @@ button[disabled] {
 .app.theme-blue .neo-panel { background: #ffffff; border: 2px solid #000; }
 .app.theme-blue .cell { background: #ffffff; border: 2px solid #000; }
 .app.theme-blue .cell:hover:not(:disabled) { background: #f5f5f5; }
-.app.theme-blue .cta-main { background: #000; color: #fff; }
-.app.theme-blue .cta-secondary { background: #fff; color: #000; border: 2px solid #000; }
-.app.theme-blue .cta-tertiary { background: transparent; color: #000; border: 2px solid transparent; }
-.app.theme-blue .cta-tertiary:hover { background: rgba(0,0,0,0.05); }
 
 /* Pink theme (red #f22929 and black) */
 .app.theme-pink {
@@ -797,10 +784,6 @@ button[disabled] {
 .app.theme-pink .modal { background: #ffffff; color: #000; }
 .app.theme-pink .history-modal-content { background: #ffffff; color: #000; }
 .app.theme-pink .stats-chips .chip { background: #ffffff; color: #000; }
-.app.theme-pink .cta-main { background: #000; color: #fff; }
-.app.theme-pink .cta-secondary { background: #fff; color: #000; border: 2px solid #000; }
-.app.theme-pink .cta-tertiary { background: transparent; color: #000; border: 2px solid transparent; }
-.app.theme-pink .cta-tertiary:hover { background: rgba(255,255,255,0.1); }
 
 /* Yellow theme */
 .app.theme-yellow {
@@ -814,10 +797,6 @@ button[disabled] {
 .app.theme-yellow .neo-panel { background: #ffffff; border: 2px solid #000; }
 .app.theme-yellow .cell { background: #ffffff; border: 2px solid #000; }
 .app.theme-yellow .cell:hover:not(:disabled) { background: #fffef0; }
-.app.theme-yellow .cta-main { background: #000; color: #fff; }
-.app.theme-yellow .cta-secondary { background: #fff; color: #000; border: 2px solid #000; }
-.app.theme-yellow .cta-tertiary { background: transparent; color: #000; border: 2px solid transparent; }
-.app.theme-yellow .cta-tertiary:hover { background: rgba(0,0,0,0.05); }
 
 /* Simple theme (flat green, minimal UI) */
 .app.theme-simple {
@@ -914,14 +893,48 @@ button[disabled] {
 .app.theme-simple .cell:focus-visible,
 .app.theme-simple button:focus-visible { outline:2px solid #000; outline-offset:2px; }
 
+/* Simple theme CTA buttons */
+.app.theme-simple .cta-main { background: #000; color: #fff; }
+.app.theme-simple .cta-secondary { background: #fff; color: #000; border: 2px solid #000; }
+.app.theme-simple .cta-tertiary { background: transparent; color: #000; border: 2px solid transparent; }
+.app.theme-simple .cta-tertiary:hover { background: rgba(0,0,0,0.05); }
+
+/* Apply same CTA styles to all themes */
+.app.theme-blue .cta-main { background: #000; color: #fff; }
+.app.theme-blue .cta-secondary { background: #fff; color: #000; border: 2px solid #000; }
+.app.theme-blue .cta-tertiary { background: transparent; color: #000; border: 2px solid transparent; }
+.app.theme-blue .cta-tertiary:hover { background: rgba(0,0,0,0.05); }
+
+.app.theme-pink .cta-main { background: #000; color: #fff; }
+.app.theme-pink .cta-secondary { background: #fff; color: #000; border: 2px solid #000; }
+.app.theme-pink .cta-tertiary { background: transparent; color: #000; border: 2px solid transparent; }
+.app.theme-pink .cta-tertiary:hover { background: rgba(255,255,255,0.1); }
+
+.app.theme-yellow .cta-main { background: #000; color: #fff; }
+.app.theme-yellow .cta-secondary { background: #fff; color: #000; border: 2px solid #000; }
+.app.theme-yellow .cta-tertiary { background: transparent; color: #000; border: 2px solid transparent; }
+.app.theme-yellow .cta-tertiary:hover { background: rgba(0,0,0,0.05); }
+
 /* Practice panel */
 .practice { margin: 6px auto 10px; width: min(100%, 260px); }
 .practice-header { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 8px; }
 .practice-title { margin: 0; font-size: 13.5px; letter-spacing:.2px; color:#e5e7eb; }
 .practice-controls { display:flex; gap:10px; flex-wrap: wrap; align-items:center; }
 .toggle-group { display:inline-flex; gap:6px; align-items:center; }
-.practice-board { --cell-size: clamp(32px, 14vw, 56px); margin: 6px auto; gap: 4px; }
-.practice-board .cell { font-size: clamp(18px, 6vw, 26px); }
+.practice-board { 
+  --cell-size: clamp(32px, 14vw, 56px); 
+  margin: 6px auto; 
+  gap: 4px;
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  background: #000; 
+  padding: 4px; 
+  border-radius: 8px;
+}
+.practice-board .cell { 
+  font-size: clamp(18px, 6vw, 26px);
+  filter: none !important;
+}
 .practice .status { margin: 2px 0; font-size: 12px; }
 .practice-footer { text-align:center; margin-top: 2px; }
 .muted { color:#94a3b8; font-size: 12px; }
@@ -940,45 +953,11 @@ button[disabled] {
   .tagline { display: none; }
 }
 
-/* History Modal - Full Screen */
-.history-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-  animation: fadeIn 0.3s ease;
-  backdrop-filter: blur(4px);
-}
-
-.history-modal-content {
-  width: min(94vw, 860px);
-  max-height: 90vh;
-  background: #fff;
-  border: 3px solid #000;
-  border-radius: 16px;
-  padding: 24px;
-  overflow-y: auto;
-  animation: slideUp 0.3s ease;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-}
-
-.history-modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid #000;
-}
-
-.history-modal-title {
-  font-size: 28px;
-  font-weight: 800;
-  margin: 0;
-  letter-spacing: -0.5px;
+/* History Screen */
+.history-screen {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .history { 
