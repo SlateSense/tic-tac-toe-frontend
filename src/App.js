@@ -589,7 +589,7 @@ export default function App() {
     : null;
 
   // Swipe gestures for tab switching
-  const modalOpen = showSettings || showStartModal || showHowToModal || showSupportModal || showHistoryModal || showTerms || showPrivacy;
+  const modalOpen = showSettings || showStartModal || showHowToModal || showSupportModal;
   const handleTouchStart = (e) => {
     if (modalOpen || !e.touches?.length) return;
     const t = e.touches[0];
@@ -603,8 +603,8 @@ export default function App() {
     const dx = t.clientX - start.x;
     const dy = t.clientY - start.y;
     if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy)) {
-      if (dx < 0 && activeTab === 'Menu') { setActiveTab('History'); setShowHistoryModal(true); }
-      else if (dx > 0 && activeTab === 'History') { setShowHistoryModal(false); setActiveTab('Menu'); }
+      if (dx < 0 && activeTab === 'Menu') setActiveTab('History');
+      else if (dx > 0 && activeTab === 'History') setActiveTab('Menu');
     }
   };
 
@@ -632,8 +632,8 @@ export default function App() {
         </div>
       </header>
       <div className="tabs neo-tabs">
-        <button className={activeTab==='Menu'? 'active':''} onClick={()=>{ setActiveTab('Menu'); setShowHistoryModal(false); }}>Menu</button>
-        <button className={(showHistoryModal || activeTab==='History') ? 'active' : ''} onClick={()=>{ setActiveTab('History'); setShowHistoryModal(true); }}>History</button>
+        <button className={activeTab==='Menu'? 'active':''} onClick={()=>setActiveTab('Menu')}>Menu</button>
+        <button onClick={()=>setShowHistoryModal(true)}>History</button>
       </div>
 
       {activeTab === 'Menu' && currentScreen === 'menu' && (
@@ -650,14 +650,14 @@ export default function App() {
             </div>
             <div className="cta-item">
               <button
-                className="neo-btn cta-secondary"
+                className="neo-btn cta-main"
                 onClick={() => setShowHowToModal(true)}
                 aria-label="How to Play — Rules and tips"
               >How to Play</button>
             </div>
             <div className="cta-item">
               <button
-                className="neo-btn cta-tertiary"
+                className="neo-btn cta-main outline"
                 onClick={() => setShowSupportModal(true)}
                 aria-label="Contact Support on Telegram"
               >Contact Support</button>
@@ -726,11 +726,11 @@ export default function App() {
 
 
       {showHistoryModal && (
-        <div className="history-modal" onClick={() => { setShowHistoryModal(false); setActiveTab('Menu'); }}>
+        <div className="history-modal" onClick={() => setShowHistoryModal(false)}>
           <div className="history-modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="history-modal-header">
               <h2 className="history-modal-title">📊 Game History</h2>
-              <button className="neo-btn" onClick={() => { setShowHistoryModal(false); setActiveTab('Menu'); }}>✕</button>
+              <button className="neo-btn" onClick={() => setShowHistoryModal(false)}>✕</button>
             </div>
             <div className="stats-chips" aria-label="Your stats">
               <span className="chip">🏆 Wins: {stats.wins}</span>
