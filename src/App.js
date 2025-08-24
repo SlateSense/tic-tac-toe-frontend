@@ -650,14 +650,14 @@ export default function App() {
             </div>
             <div className="cta-item">
               <button
-                className="neo-btn cta-secondary"
+                className="neo-btn cta-main"
                 onClick={() => setShowHowToModal(true)}
                 aria-label="How to Play — Rules and tips"
               >How to Play</button>
             </div>
             <div className="cta-item">
               <button
-                className="neo-btn cta-tertiary"
+                className="neo-btn cta-main outline"
                 onClick={() => setShowSupportModal(true)}
                 aria-label="Contact Support on Telegram"
               >Contact Support</button>
