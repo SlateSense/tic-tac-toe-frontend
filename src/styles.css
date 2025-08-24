@@ -636,6 +636,19 @@ button[disabled] {
 
 /* Remove incorrect global CTA overrides */
 
+/* Global practice board fixes - no blur, clean text */
+.practice-board .cell { 
+  filter: none !important; 
+  text-shadow: none !important; 
+  backdrop-filter: none !important;
+}
+.practice-board .cell.x,
+.practice-board .cell.o { 
+  filter: none !important; 
+  text-shadow: none !important; 
+  backdrop-filter: none !important;
+}
+
 /* Simple theme (flat green, minimal UI) */
 .app.theme-simple {
   color: #000;
