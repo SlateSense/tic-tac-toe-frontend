@@ -41,15 +41,10 @@ export default function StartScreen({
             <input 
               id="ln-username" 
               value={lightningAddress} 
-              onChange={e => {
-                const raw = e.target.value || '';
-                const user = raw.split('@')[0].trim();
-                setLightningAddress(user);
-              }} 
-              placeholder="e.g. user" 
+              onChange={e => setLightningAddress(e.target.value)} 
+              placeholder="username@speed.app" 
               disabled={addressLocked}
             />
-            <span className="suffix" aria-hidden>@speed.app</span>
             {lightningAddress && !addressLocked && (
               <button 
                 type="button" 
@@ -61,7 +56,7 @@ export default function StartScreen({
               </button>
             )}
           </div>
-          <small className="helper">Enter your Speed username. Your address will be username@speed.app</small>
+          <small className="helper">Enter your Speed username or full Lightning address</small>
         </div>
 
         <div className="form-section">
