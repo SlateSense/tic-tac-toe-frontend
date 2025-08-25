@@ -189,26 +189,37 @@ export default function App() {
       },
       waitingForOpponent: (payload) => {
         // Start waiting countdown until potential bot spawn or human arrival
-        const { minWait, maxWait, estWaitSeconds, spawnAt } = payload || {};
+        const { message, estimatedWait, playersInGame } = payload || {};
         setGameState('waiting');
         setCurrentScreen('waiting');
-        if (typeof minWait === 'number' && typeof maxWait === 'number') {
-          setWaitingInfo({ minWait, maxWait, estWaitSeconds, spawnAt });
+        setMessage(message || 'Finding opponent...');
+        
+        // Parse estimated wait time (e.g., "13-25 seconds")
+        if (estimatedWait) {
+          const match = estimatedWait.match(/(\d+)-(\d+)/);
+          if (match) {
+            const minWait = parseInt(match[1]);
+            const maxWait = parseInt(match[2]);
+            setWaitingInfo({ minWait, maxWait, estimatedWait });
+            // Start countdown from max wait time
+            setWaitingSecondsLeft(maxWait);
+            
+            if (waitingIntervalRef.current) { 
+              clearInterval(waitingIntervalRef.current); 
+            }
+            
+            const startTime = Date.now();
+            waitingIntervalRef.current = setInterval(() => {
+              const elapsed = Math.floor((Date.now() - startTime) / 1000);
+              const remaining = Math.max(0, maxWait - elapsed);
+              setWaitingSecondsLeft(remaining);
+            }, 1000);
+          }
         } else {
           setWaitingInfo(null);
-        }
-        setMatchInfo(null);
-        if (waitingIntervalRef.current) { clearInterval(waitingIntervalRef.current); waitingIntervalRef.current = null; }
-        if (typeof spawnAt === 'number' && Number.isFinite(spawnAt)) {
-          const tick = () => {
-            const secs = Math.max(0, Math.ceil((spawnAt - Date.now()) / 1000));
-            setWaitingSecondsLeft(secs);
-          };
-          tick();
-          waitingIntervalRef.current = setInterval(tick, 500);
-        } else {
           setWaitingSecondsLeft(null);
         }
+        setMatchInfo(null);
       },
       matchFound: ({ opponent, startsIn, startAt }) => {
         // Switch to pre-game countdown
