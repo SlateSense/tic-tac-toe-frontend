@@ -615,7 +615,9 @@ button[disabled] {
 .cta-secondary { 
   background: #fff; 
   color: #000; 
-  border: 2px solid #000; 
+  border: 2px solid #000;
+  width: min(92%, 320px); 
+  min-width: 220px; 
   font-size: 16px; 
   padding: 14px 28px; 
   font-weight: 600; 
