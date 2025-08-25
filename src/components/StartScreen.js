@@ -103,12 +103,35 @@ export default function StartScreen({
 
         <div className="actions">
           <button 
-            className="neo-btn primary large" 
-            onClick={onStart} 
-            disabled={!connected || !acceptedTerms}
-            aria-label="Start Game"
+            className="btn-play"
+            onClick={onStart}
+            disabled={!lightningAddress || !betAmount || !acceptedTerms || !connected}
           >
-            {connected ? 'Start Game' : 'Connecting...'}
+            <span className="btn-icon">⚡</span>
+            Play for {betAmount} SATS
+          </button>
+        
+          <button 
+            className="btn-test"
+            onClick={() => {
+              console.log('TEST: Triggering test payment');
+              window.socket?.emit('test_payment', { 
+                betAmount: parseInt(betAmount, 10),
+                lightningAddress 
+              });
+            }}
+            disabled={!connected}
+            style={{
+              marginTop: '10px',
+              backgroundColor: '#ff6b6b',
+              color: 'white',
+              padding: '10px 20px',
+              borderRadius: '5px',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            TEST: Skip Payment (Dev Only)
           </button>
         </div>
       </div>
