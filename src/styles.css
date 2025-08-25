@@ -111,7 +111,14 @@ body {
 .menu-center { display:flex; align-items:center; justify-content:center; min-height: 0; }
 .cta-col { display:flex; flex-direction: column; gap: 14px; align-items: center; justify-content: center; margin: 8px auto 4px; }
 .cta-item { display:flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
-.cta-main { width: min(92%, 320px); min-width: 220px; }
+.cta-main { 
+  width: min(92%, 320px); 
+  min-width: 220px;
+  font-size: 18px; 
+  padding: 16px 32px; 
+  font-weight: 700; 
+  min-height: 56px;
+}
 .cta-context { font-size: 12px; color:#666; max-width: 420px; }
 .neo-btn.small { padding: 6px 10px; min-height: 32px; font-size: 12px; }
 .neo-btn.outline { background: transparent; border: 2px solid #000; color:#000; }
@@ -617,20 +624,22 @@ button[disabled] {
   color: #000; 
   border: 2px solid #000;
   width: min(92%, 320px); 
-  min-width: 220px; 
-  font-size: 16px; 
-  padding: 14px 28px; 
-  font-weight: 600; 
-  min-height: 48px; 
+  min-width: 220px;
+  font-size: 18px; 
+  padding: 16px 32px; 
+  font-weight: 700; 
+  min-height: 56px;
 }
 .cta-tertiary { 
   background: transparent; 
   color: #000; 
-  border: 2px solid transparent; 
-  font-size: 14px; 
-  padding: 12px 24px; 
-  font-weight: 500; 
-  min-height: 44px; 
+  border: 2px solid transparent;
+  width: min(92%, 320px); 
+  min-width: 220px;
+  font-size: 18px; 
+  padding: 16px 32px; 
+  font-weight: 700; 
+  min-height: 56px;
 }
 .cta-tertiary:hover { 
   background: rgba(0,0,0,0.05); 
