@@ -786,7 +786,7 @@ button[disabled] {
 .app.theme-blue .neo-btn.primary { background:#000; color:#fff; border-color:#000; box-shadow:none; }
 .app.theme-blue .neo-btn.outline { background:transparent; color:#000; border:1px solid #000; }
 .app.theme-blue .cta-main { background:#000; color:#fff; border:1px solid #000; box-shadow:none; }
-.app.theme-blue .cta-secondary { background: #ffffff; color: #000; border: 2px solid #000; }
+.app.theme-blue .cta-secondary { background: #ffffff !important; color: #000 !important; border: 2px solid #000 !important; box-shadow: none !important; }
 .app.theme-blue .cta-tertiary { background:transparent; color:#000; border:1px solid transparent; box-shadow:none; }
 .app.theme-blue .practice-board .cell { background:#ffffff; color:#000; border:1px solid #000; text-shadow:none; filter:none; }
 .app.theme-blue .practice-board .cell.x,
@@ -827,7 +827,7 @@ button[disabled] {
 .app.theme-pink .neo-btn.primary { background:#000; color:#fff; border-color:#000; box-shadow:none; }
 .app.theme-pink .neo-btn.outline { background:transparent; color:#000; border:1px solid #000; }
 .app.theme-pink .cta-main { background:#000; color:#fff; border:1px solid #000; box-shadow:none; }
-.app.theme-pink .cta-secondary { background:#ffffff; color:#000; border:2px solid #000; box-shadow:none; }
+.app.theme-pink .cta-secondary { background: #ffffff !important; color: #000 !important; border: 2px solid #000 !important; box-shadow: none !important; }
 .app.theme-pink .cta-tertiary { background:transparent; color:#000; border:1px solid transparent; box-shadow:none; }
 .app.theme-pink .practice-board .cell { background:#ffffff; color:#000; border:1px solid #000; text-shadow:none; filter:none; }
 .app.theme-pink .practice-board .cell.x,
@@ -864,7 +864,7 @@ button[disabled] {
 .app.theme-yellow .neo-btn.primary { background:#000; color:#fff; border-color:#000; box-shadow:none; }
 .app.theme-yellow .neo-btn.outline { background:transparent; color:#000; border:1px solid #000; }
 .app.theme-yellow .cta-main { background:#000; color:#fff; border:1px solid #000; box-shadow:none; }
-.app.theme-yellow .cta-secondary { background:#ffffff; color:#000; border:2px solid #000; box-shadow:none; }
+.app.theme-yellow .cta-secondary { background: #ffffff !important; color: #000 !important; border: 2px solid #000 !important; box-shadow: none !important; }
 .app.theme-yellow .cta-tertiary { background:transparent; color:#000; border:1px solid transparent; box-shadow:none; }
 .app.theme-yellow .practice-board .cell { background:#ffffff; color:#000; border:1px solid #000; text-shadow:none; filter:none; }
 .app.theme-yellow .practice-board .cell.x,
@@ -957,7 +957,8 @@ button[disabled] {
 .app.theme-simple .badge,
 .app.theme-simple .badge.ok,
 .app.theme-simple .badge.warn,
-.app.theme-simple .badge.info { background:#ffffff; color:#000; border:1px solid #000; }
+.app.theme-simple .badge.info,
+.app.theme-simple .cta-secondary { background: #ffffff !important; color: #000 !important; border: 2px solid #000 !important; box-shadow: none !important; }
 .app.theme-simple .badge .dot { background:#000; box-shadow:none; }
 .app.theme-simple .btn-outline { background:transparent; color:#000; border:1px solid #000; }
 .app.theme-simple .message-line { color:#000; }
