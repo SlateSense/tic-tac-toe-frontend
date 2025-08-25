@@ -114,10 +114,8 @@ body {
 .cta-main { 
   width: min(92%, 320px); 
   min-width: 220px;
-  font-size: 18px; 
-  padding: 16px 32px; 
-  font-weight: 700; 
-  min-height: 56px;
+  padding: 12px 20px;
+  font-weight: 600;
 }
 .cta-context { font-size: 12px; color:#666; max-width: 420px; }
 .neo-btn.small { padding: 6px 10px; min-height: 32px; font-size: 12px; }
@@ -625,10 +623,8 @@ button[disabled] {
   border: 2px solid #000;
   width: min(92%, 320px); 
   min-width: 220px;
-  font-size: 18px; 
-  padding: 16px 32px; 
-  font-weight: 700; 
-  min-height: 56px;
+  padding: 12px 20px;
+  font-weight: 600;
 }
 .cta-tertiary { 
   background: transparent; 
@@ -636,10 +632,8 @@ button[disabled] {
   border: 2px solid transparent;
   width: min(92%, 320px); 
   min-width: 220px;
-  font-size: 18px; 
-  padding: 16px 32px; 
-  font-weight: 700; 
-  min-height: 56px;
+  padding: 12px 20px;
+  font-weight: 600;
 }
 .cta-tertiary:hover { 
   background: rgba(0,0,0,0.05); 
