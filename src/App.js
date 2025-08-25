@@ -650,7 +650,7 @@ export default function App() {
             </div>
             <div className="cta-item">
               <button
-                className="neo-btn cta-main"
+                className="neo-btn cta-secondary"
                 onClick={() => setShowHowToModal(true)}
                 aria-label="How to Play — Rules and tips"
               >How to Play</button>
