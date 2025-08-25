@@ -111,6 +111,7 @@ export default function StartScreen({
             Play for {betAmount} SATS
           </button>
         
+          {/* TEST BUTTON - Remove in production */}
           <button 
             className="btn-test"
             onClick={() => {
