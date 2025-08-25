@@ -763,7 +763,7 @@ export default function App() {
             </div>
             <div className="section">
               <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
-                {[['simple', 'Green'], ['blue', 'Monochrome'], ['pink', 'Red'], ['yellow', 'Gold']].map(([key, label]) => (
+                {[['simple', 'Green'], ['blue', 'Monochrome'], ['pink', 'Red']].map(([key, label]) => (
                   <button key={key} className={`neo-btn ${theme===key?'primary':''}`} onClick={()=>setTheme(key)} style={{textTransform: 'capitalize'}}>{label}</button>
                 ))}
               </div>

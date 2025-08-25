@@ -564,55 +564,6 @@ button[disabled] {
 
 /* Header actions */
 .header-actions { display:flex; gap:8px; align-items:center; }
-
-/* Clean Theme: Yellow */
-.app.theme-yellow {
-  background: #ffd700;
-  color: #000;
-}
-.app.theme-yellow .panel,
-.app.theme-yellow .neo-panel,
-.app.theme-yellow .app-header { 
-  background: #fff; 
-  border: 2px solid #000;
-}
-.app.theme-yellow .cell { 
-  background: #fff; 
-  border: 3px solid #000;
-}
-.app.theme-yellow .cell.win { 
-  background: #ffeb3b;
-}
-.app.theme-yellow button,
-.app.theme-yellow .neo-btn,
-.app.theme-yellow input,
-.app.theme-yellow select { 
-  background: #fff; 
-  color: #000; 
-  border: 2px solid #000;
-}
-.app.theme-yellow button:hover,
-.app.theme-yellow .neo-btn:hover { 
-  background: #000; 
-  color: #fff;
-}
-.app.theme-yellow button.active,
-.app.theme-yellow .tabs button.active,
-.app.theme-yellow .neo-tabs button.active { 
-  background: #000; 
-  color: #fff;
-}
-.app.theme-yellow .cta-main { 
-  background: #000; 
-  color: #fff; 
-  border: 2px solid #000; 
-  font-size: 18px; 
-  padding: 16px 32px; 
-  font-weight: 700; 
-  min-height: 56px; 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
-  transition: all 0.2s ease; 
-}
 .cta-main:hover { 
   transform: translateY(-2px); 
   box-shadow: 0 6px 20px rgba(0,0,0,0.3); 
@@ -838,42 +789,6 @@ button[disabled] {
 .app.theme-pink .practice-board .cell.x,
 .app.theme-pink .practice-board .cell.o { color:#000; text-shadow:none; filter:none; }
 
-/* Yellow theme */
-.app.theme-yellow {
-  color: #000;
-  background: linear-gradient(135deg, #FFEB3B 0%, #FDD835 100%);
-}
-.app.theme-yellow::before,
-.app.theme-yellow::after { content: none; }
-.app.theme-yellow .neo-board::before { content: none; }
-.app.theme-yellow .app-header { background: #ffffff; border: 2px solid #000; }
-.app.theme-yellow .neo-panel { background: #ffffff; border: 2px solid #000; }
-.app.theme-yellow .cell { background: #ffffff; border: 2px solid #000; }
-.app.theme-yellow .cell:hover:not(:disabled) { background: #fffef0; }
-.app.theme-yellow .cell.x,
-.app.theme-yellow .cell.o {
-  color: #000;
-  text-shadow: none;
-}
-.app.theme-yellow .cell.win { background: #fffbe6; border-color: #000; box-shadow: none; }
-.app.theme-yellow .cell.last { outline: 2px dashed #000; }
-.app.theme-yellow a { color: #000; }
-.app.theme-yellow .modal { background: #ffffff; border: 1px solid #000; }
-.app.theme-yellow .tabs button,
-.app.theme-yellow .neo-tabs button { background: #ffffff; color:#000; border:1px solid #000; }
-.app.theme-yellow .tabs button.active,
-.app.theme-yellow .neo-tabs button.active { background:#000; color:#fff; border-color:#000; }
-.app.theme-yellow button { background:#ffffff; color:#000; border:1px solid #000; }
-.app.theme-yellow button:hover { filter:none; }
-.app.theme-yellow .neo-btn { background:#ffffff; color:#000; border:1px solid #000; box-shadow:none; text-shadow:none; }
-.app.theme-yellow .neo-btn.primary { background:#000; color:#fff; border-color:#000; box-shadow:none; }
-.app.theme-yellow .neo-btn.outline { background:transparent; color:#000; border:1px solid #000; }
-.app.theme-yellow .cta-main { background:#000; color:#fff; border:1px solid #000; box-shadow:none; }
-.app.theme-yellow .cta-secondary { background: #ffffff !important; color: #000 !important; border: 2px solid #000 !important; box-shadow: none !important; }
-.app.theme-yellow .cta-tertiary { background:transparent; color:#000; border:1px solid transparent; box-shadow:none; }
-.app.theme-yellow .practice-board .cell { background:#ffffff; color:#000; border:1px solid #000; text-shadow:none; filter:none; }
-.app.theme-yellow .practice-board .cell.x,
-.app.theme-yellow .practice-board .cell.o { color:#000; text-shadow:none; filter:none; }
 
 /* Simple theme (flat green, minimal UI) */
 .app.theme-simple {
