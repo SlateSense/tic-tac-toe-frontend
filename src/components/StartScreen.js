@@ -20,7 +20,8 @@ export default function StartScreen({
   connected,
   onOpenTerms,
   onOpenPrivacy,
-  addressLocked = false
+  addressLocked = false,
+  noticeMessage
 }) {
   const payoutAmount = BET_OPTIONS.find(o => o.amount === parseInt(betAmount, 10))?.winnings || 0;
 
@@ -29,6 +30,12 @@ export default function StartScreen({
       <div className="panel neo-panel glass">
         <h2>Start New Game</h2>
         <div className="subtitle">Win {payoutAmount} SATS</div>
+
+        {noticeMessage ? (
+          <p className="payment-msg" role="status" aria-live="polite" style={{marginTop: 8}}>
+            {noticeMessage}
+          </p>
+        ) : null}
 
         <p className="notice-agree">
           By playing the game you agree to our Terms & Conditions and Privacy Policy.

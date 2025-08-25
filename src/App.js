@@ -161,6 +161,21 @@ export default function App() {
         setGameState('waiting');
         setCurrentScreen('waiting');
       },
+      paymentTimeout: ({ message }) => {
+        // Stop waiting and prompt user to retry
+        setIsWaitingForPayment(false);
+        setPaymentInfo(null);
+        setMessage(message || 'Payment verification timed out. Please try again.');
+        setGameState('splash');
+        setCurrentScreen('start');
+        setWaitingInfo(null);
+        setWaitingSecondsLeft(null);
+        setMatchInfo(null);
+        setMatchSecondsLeft(null);
+        setAddressLocked(false);
+        if (waitingIntervalRef.current) { clearInterval(waitingIntervalRef.current); waitingIntervalRef.current = null; }
+        if (matchIntervalRef.current) { clearInterval(matchIntervalRef.current); matchIntervalRef.current = null; }
+      },
       paymentStatus: ({ status, message }) => {
         console.log('Payment status:', status, message);
         if (status === 'pending' || status === 'unpaid') {
@@ -172,19 +187,28 @@ export default function App() {
       transaction: ({ message }) => {
         setMessage(message);
       },
-      waitingForOpponent: ({ minWait, maxWait, estWaitSeconds, spawnAt }) => {
+      waitingForOpponent: (payload) => {
         // Start waiting countdown until potential bot spawn or human arrival
+        const { minWait, maxWait, estWaitSeconds, spawnAt } = payload || {};
         setGameState('waiting');
         setCurrentScreen('waiting');
-        setWaitingInfo({ minWait, maxWait, estWaitSeconds, spawnAt });
+        if (typeof minWait === 'number' && typeof maxWait === 'number') {
+          setWaitingInfo({ minWait, maxWait, estWaitSeconds, spawnAt });
+        } else {
+          setWaitingInfo(null);
+        }
         setMatchInfo(null);
         if (waitingIntervalRef.current) { clearInterval(waitingIntervalRef.current); waitingIntervalRef.current = null; }
-        const tick = () => {
-          const secs = Math.max(0, Math.ceil((Number(spawnAt) - Date.now()) / 1000));
-          setWaitingSecondsLeft(secs);
-        };
-        tick();
-        waitingIntervalRef.current = setInterval(tick, 500);
+        if (typeof spawnAt === 'number' && Number.isFinite(spawnAt)) {
+          const tick = () => {
+            const secs = Math.max(0, Math.ceil((spawnAt - Date.now()) / 1000));
+            setWaitingSecondsLeft(secs);
+          };
+          tick();
+          waitingIntervalRef.current = setInterval(tick, 500);
+        } else {
+          setWaitingSecondsLeft(null);
+        }
       },
       matchFound: ({ opponent, startsIn, startAt }) => {
         // Switch to pre-game countdown
@@ -681,6 +705,7 @@ export default function App() {
           onOpenTerms={() => setShowTerms(true)}
           onOpenPrivacy={() => setShowPrivacy(true)}
           addressLocked={addressLocked}
+          noticeMessage={message}
         />
       )}
 
