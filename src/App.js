@@ -97,18 +97,12 @@ export default function App() {
   }, [history]);
 
   useEffect(() => {
-    const newSocket = io(WS_ENDPOINT, {
-      transports: ['websocket', 'polling'],
-      reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000
-    });
-    setSocket(newSocket);
-    window.socket = newSocket; // Make socket accessible for testing
+    const s = io(BACKEND_URL, { transports: ['websocket', 'polling'] });
+    setSocket(s);
 
     const handlers = {
       connect: () => {
-        setSocketId(newSocket.id);
+        setSocketId(s.id);
         setConnected(true);
       },
       disconnect: () => {
@@ -162,7 +156,6 @@ export default function App() {
         setMessage(`Payout error: ${error || 'Unknown error'}`);
       },
       paymentVerified: () => {
-        console.log('Payment verified event received');
         setIsWaitingForPayment(false);
         setMessage('Payment verified! Waiting for opponent...');
         setGameState('waiting');
@@ -195,7 +188,6 @@ export default function App() {
         setMessage(message);
       },
       waitingForOpponent: (payload) => {
-        console.log('Received waitingForOpponent event:', payload);
         // Start waiting countdown until potential bot spawn or human arrival
         const { minWait, maxWait, estWaitSeconds, spawnAt } = payload || {};
         setGameState('waiting');
