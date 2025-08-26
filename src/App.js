@@ -232,6 +232,11 @@ export default function App() {
         const tick = () => {
           const secs = Math.max(0, Math.ceil((Number(startAt) - Date.now()) / 1000));
           setMatchSecondsLeft(secs);
+          // Clear interval when countdown reaches 0
+          if (secs <= 0 && matchIntervalRef.current) {
+            clearInterval(matchIntervalRef.current);
+            matchIntervalRef.current = null;
+          }
         };
         tick();
         matchIntervalRef.current = setInterval(tick, 250);
@@ -261,6 +266,15 @@ export default function App() {
       boardUpdate: ({ board, lastMove }) => {
         setBoard(board);
         setLastMove(typeof lastMove === 'number' ? lastMove : null);
+      },
+      moveMade: ({ position, symbol, nextTurn, board, turnDeadline }) => {
+        setBoard(board);
+        setLastMove(position);
+        setTurn(nextTurn);
+        setTurnDeadline(turnDeadline || null);
+        const ttl = turnDeadline ? Math.max(1, Math.ceil((Number(turnDeadline) - Date.now()) / 1000)) : null;
+        setTurnDuration(ttl);
+        setMessage(nextTurn === s.id ? 'Your move' : "Opponent's move");
       },
       nextTurn: ({ turn, turnDeadline }) => {
         setTurn(turn);

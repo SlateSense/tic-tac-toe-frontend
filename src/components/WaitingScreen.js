@@ -24,12 +24,6 @@ export default function WaitingScreen({
                   <span className="label">Estimated wait:</span>
                   <span className="value">{waitingInfo.estimatedWait || `${waitingInfo.minWait}–${waitingInfo.maxWait}s`}</span>
                 </div>
-                {waitingSecondsLeft !== null && (
-                  <div className="stat">
-                    <span className="label">Time remaining:</span>
-                    <span className="value">{waitingSecondsLeft}s</span>
-                  </div>
-                )}
               </div>
             </div>
           )}
