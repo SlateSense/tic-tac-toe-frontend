@@ -267,21 +267,21 @@ export default function App() {
         setBoard(board);
         setLastMove(typeof lastMove === 'number' ? lastMove : null);
       },
-      moveMade: ({ position, symbol, nextTurn, board, turnDeadline }) => {
+      moveMade: ({ position, symbol, nextTurn, board, turnDeadline, message }) => {
         setBoard(board);
         setLastMove(position);
         setTurn(nextTurn);
         setTurnDeadline(turnDeadline || null);
         const ttl = turnDeadline ? Math.max(1, Math.ceil((Number(turnDeadline) - Date.now()) / 1000)) : null;
         setTurnDuration(ttl);
-        setMessage(nextTurn === s.id ? 'Your move' : "Opponent's move");
+        setMessage(message || (nextTurn === s.id ? 'Your move' : "Opponent's move"));
       },
-      nextTurn: ({ turn, turnDeadline }) => {
+      nextTurn: ({ turn, turnDeadline, message }) => {
         setTurn(turn);
         setTurnDeadline(turnDeadline || null);
         const ttl = turnDeadline ? Math.max(1, Math.ceil((Number(turnDeadline) - Date.now()) / 1000)) : null;
         setTurnDuration(ttl);
-        setMessage(turn === s.id ? 'Your move' : "Opponent's move");
+        setMessage(message || (turn === s.id ? 'Your move' : "Opponent's move"));
       },
       gameEnd: ({ message, winnerSymbol, winningLine }) => {
         setGameState('finished');
