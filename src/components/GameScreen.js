@@ -16,8 +16,7 @@ export default function GameScreen({
   tiltEnabled,
   boardRef,
   onBoardPointerMove,
-  onBoardPointerLeave,
-  turnDuration
+  onBoardPointerLeave
 }) {
   const isPlaying = gameState === 'playing';
   const isFinished = gameState === 'finished';
@@ -30,9 +29,6 @@ export default function GameScreen({
           <h2>Tic-Tac-Toe</h2>
           <div className="game-status">
             <span className="message">{message}</span>
-            {turnDuration && isPlaying && (
-              <span className="turn-timer">Time: {turnDuration}s</span>
-            )}
             <span className="player-symbol">You: {symbol || '-'}</span>
           </div>
         </div>
