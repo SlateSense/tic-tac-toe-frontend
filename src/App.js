@@ -450,11 +450,14 @@ export default function App() {
   useEffect(() => {
     if (!turnDeadline || gameState !== 'playing') {
       setTimeLeft(null);
+      setTurnDuration(null);
       return;
     }
     const update = () => {
       const ms = Math.max(0, Number(turnDeadline) - Date.now());
-      setTimeLeft(Math.ceil(ms / 1000));
+      const seconds = Math.ceil(ms / 1000);
+      setTimeLeft(seconds);
+      setTurnDuration(seconds);
     };
     update();
     const t = setInterval(update, 250);
@@ -764,6 +767,7 @@ export default function App() {
           winningLine={winningLine}
           message={message}
           gameState={gameState}
+          turnDuration={turnDuration}
           onCellClick={onCellClick}
           onResign={doResign}
           onReturnToMenu={resetToMenu}
